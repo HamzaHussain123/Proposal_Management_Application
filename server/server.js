@@ -8,13 +8,16 @@ app.use(express.json())
 const _port = process.env.PORT;
 
 /* CONNECT TO DB */
-const username = process.env.USERNAME,
-    password = process.env.PASSWORD,
-    database = process.env.DATABASE;
+
 
 const mongoose = require("mongoose");
-mongoose.connect(`mongodb+srv://${username}:${password}@cluster0.b0yyzgm.mongodb.net/${database}?retryWrites=true&w=majority`)
+mongoose.connect(process.env.MONGO_URI).then(() => {
+    console.log("Connected to Mongo_DB");
 
+}).catch((err) => {
+    console.log(err);
+
+})
 /* IMPORT DeptFinancials MODEL */
 const DeptFinancialsModel = require('./models/DeptFinancials');
 
@@ -116,5 +119,6 @@ app.get('/proposals.csv', (req, res) => {
  * Start the server and listen for incoming requests.
  */
 app.listen(_port, () => {
-    console.log("Server is running and listening for incoming requests.");
-});
+    console.log(`Server is runnnig on port ${_port}`);
+
+})
